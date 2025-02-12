@@ -1,0 +1,31 @@
+name: Server Validation
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '* * * * *' # Runs at 2 AM daily
+
+jobs:
+  validate-servers:
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Run Validation Scripts
+        shell: pwsh
+        run: |
+          Import-Module ./PingTest.psm1
+          Test-ServerPing
+          
+          Import-Module ./RDPStatus.psm1
+          Check-RDPStatus
+          
+          Import-Module ./LastReboot.psm1
+          Get-LastRebootTime
+          
+          Import-Module ./RDPEventLog.psm1
+          Get-RDPEventLog
+          
+          ./SendEmail.ps1 -Recipient "admin@example.com"
