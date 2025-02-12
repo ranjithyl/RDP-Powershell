@@ -2,8 +2,8 @@ name: Server Validation
 
 on:
   workflow_dispatch:
-  schedule:
-    - cron: '* * * * *' # Runs at 2 AM daily
+  #schedule:
+    #- cron: '# # # # #' # Runs at 2 AM daily
 
 jobs:
   validate-servers:
